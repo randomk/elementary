@@ -1,6 +1,7 @@
 # elementary
 scritp to install stuff in ubuntu based system
 
+![](https://media.giphy.com/media/12NUbkX6p4xOO4/giphy.gif)
 
 ## OS Version Compatibility
 This script will support the lastest stable version of:
