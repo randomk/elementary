@@ -75,13 +75,6 @@ function notImplementedErrorMessage() {
 	errorMessage "This action($1) wasn't implemented yet"
 }
 
-function ExtraMessages() {
-	printMessage "If this script has helped you, consider making a small donation to keep the project running at all times."
-	xdg-open http://bit.do/elementary-script_donation
-	printMessage "Follow me on Github to receive updates and news ;)"
-	xdg-open https://github.com/btd1337
-}
-
 function InstallElementaryIconPack() {
 	installPackage meson
 
@@ -184,7 +177,6 @@ function main() {
 			# Notification
 			printf "\\n\\nAll tasks ran successfully!\\n\\nDiscover more native applications for elementary OS at: https://github.com/kleinrein/awesome-elementaryos\\n\\n"
 			notify-send -i utilities-terminal elementary-script "All tasks ran successfully!\\n\\nDiscover more native applications for elementary OS at:\\n\\nhttps://github.com/kleinrein/awesome-elementaryos"
-			ExtraMessages
 		else
 			return 1
 		fi
