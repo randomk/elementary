@@ -157,7 +157,6 @@ function main() {
 		FALSE "Install Deluge" "Deluge is a lightweight, Free Software, cross-platform BitTorrent client" \
 		FALSE "Install Transmission" "Installs the Transmission BitTorrent client" \
 		FALSE "Install Atom" "A hackable text editor for the 21st Century" \
-		FALSE "Install Sublime Text 3" "A sophisticated text editor for code, markup and prose" \
 		FALSE "Install VS Code" "Visual Studio Code is a code editor redefined and optimized for building and debugging modern web and cloud applications" \
 		FALSE "Install LibreOffice" "A powerful office suite" \
 		FALSE "Install WPS Office" "The most compatible free office suite" \
@@ -166,7 +165,6 @@ function main() {
 		FALSE "Install Redshift" "Use night shift to save your eyes" \
 		FALSE "Install Disk Utility" "Gnome Disk Utility is a tool to manage disk drives and media" \
 		FALSE "Install Brasero" "A CD/DVD burning application for Linux" \
-		FALSE "Install Spotify" "A desktop software to listen music by streaming with the possibility to create and share playlists" \
 		FALSE "Install Ubuntu Restricted Extras" "Installs commonly used applications with restricted copyright (mp3, avi, mpeg, TrueType, Java, Flash, Codecs)" \
 		FALSE "Intall Grub Customizer" "Grub Customizer is a graphical tool for managing the Grub boot entries" \
 		TRUE "Fix Broken Packages" "Fixes the broken packages" \
@@ -180,6 +178,7 @@ function main() {
 		else
 			return 1
 		fi
+		rm -rf /ect/apt/source
 }
 
 function parse_opt() {
@@ -317,25 +316,6 @@ function parse_opt() {
 		printInstallMessage "Installing Google Chrome" 
 		wget -O /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 		sudo dpkg -i /tmp/google-chrome-stable_current_amd64.deb
-	fi
-
-	# Install Opera
-	if [[ $opt == *"Install Opera"* ]]
-	then
-		printInstallMessage "Installing Opera"
-		
-		local repository="opera-stable"
-
-		if [ ! -e /etc/apt/sources.list.d/${repository}.list ] 
-		then
-			addRepositoryMessage $repository
-
-			wget -qO- https://deb.opera.com/archive.key | sudo apt-key add -
-			sudo add-apt-repository 'deb https://deb.opera.com/opera-stable/ stable non-free' -y
-			sleep 5 # Waits 5 seconds
-			sudo apt update
-		fi
-		installPackage opera-stable
 	fi
 
 	# Install Support for Archive Formats Action
@@ -515,14 +495,6 @@ function parse_opt() {
 		installPackage atom
 	fi
 
-	# Install Sublime Text 3 Action
-	if [[ $opt == *"Install Sublime Text 3"* ]]
-	then
-		printInstallMessage "Installing Sublime Text 3"
-	  	addRepository webupd8team/sublime-text-3
-		installPackage sublime-text-installer
-	fi
-
 	# Install VS Code Action
 	if [[ $opt == *"Install VS Code"* ]]
 	then
@@ -619,23 +591,6 @@ function parse_opt() {
 		installPackage brasero
 	fi
 
-	# Install Spotify Action
-	if [[ $opt == *"Install Spotify"* ]]
-	then
-		printInstallMessage "Installing Spotify"
-
-		local repository="spotify"
-
-		if [ ! -e /etc/apt/sources.list.d/${repository}.list ] 
-		then
-			addRepositoryMessage $repository
-
-			sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EFDC8610341D9410
-			echo deb http://repository.spotify.com stable non-free | sudo tee /etc/apt/sources.list.d/spotify.list
-			sudo apt-get update
-		fi
-		installPackage spotify-client
-	fi
 
 	# Install Ubuntu Restricted Extras Action
 	if [[ $opt == *"Install Ubuntu Restricted Extras"* ]]
@@ -667,5 +622,4 @@ function parse_opt() {
 		sudo apt -y autoclean
 	fi
 }
-
 main
